@@ -1,2 +1,2 @@
 # EcommerceApp
-Sample ecommerce app 
+This is the ecommerce app for my friend
