@@ -1,0 +1,110 @@
+<div id="intro" class="bg-image shadow-2-strong">
+  <div
+    class="mask d-flex align-items-center h-100"
+    style="background-color: rgba(0, 0, 0, 0.8)"
+  >
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-5 col-md-8">
+          <form
+            [formGroup]="loginform"
+            (ngSubmit)="onLogin()"
+            class="bg-white rounded-5 shadow-5-strong p-5"
+          >
+            <div class="alert alert-danger" *ngIf="error">
+              {{ error }}
+            </div>
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+              />
+              <label class="form-label" for="email">Email address</label>
+              <div
+                class="email-error"
+                style="color: red"
+                *ngIf="submitted && f.email.errors"
+              >
+                Email field is empty or invalid
+              </div>
+            </div>
+
+            <!-- Password input -->
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <input
+                type="password"
+                id="password"
+                formControlName="password"
+                class="form-control"
+              />
+              <label class="form-label" for="password">Password</label>
+              <div
+                class="password-error"
+                style="color: red"
+                *ngIf="submitted && f.password.errors"
+              >
+                Password field is empty or less than 6 words
+              </div>
+            </div>
+
+            <!-- 2 column grid layout for inline styling -->
+            <div class="row mb-4">
+              <div class="col d-flex justify-content-center">
+                <!-- Checkbox -->
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="checkbox"
+                    checked
+                  />
+                  <label class="form-check-label" for="checkbox">
+                    Remember me
+                  </label>
+                </div>
+              </div>
+
+              <div class="col text-center">
+                <!-- Simple link -->
+                <a href="#!">Forgot password?</a>
+              </div>
+
+              <div>
+                <!-- Submit button -->
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-block"
+                  style="margin-top: 20px"
+                >
+                  Sign in
+                </button>
+              </div>
+
+              <hr style="margin-top: 20px" />
+
+              <div class="signup" style="text-align: center">
+                <style>
+                  a:link {
+                    text-decoration: none;
+                  }
+                  a:hover {
+                    text-decoration: underline;
+                    color: red;
+                  }
+                </style>
+                <a class="nav-link" routerLink="/signup"
+                  >Need an account? Sign up!</a
+                >
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

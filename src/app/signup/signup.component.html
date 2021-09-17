@@ -1,0 +1,134 @@
+<div class="container" style="margin-top: 100px">
+  <div class="card bg-light">
+    <div class="alert alert-danger" *ngIf="error">
+      {{ error }}
+    </div>
+    <div *ngIf="isLoading" style="text-align: center">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <article class="card-body mx-auto" style="width: 400px" *ngIf="!isLoading">
+      <h4 class="card-title mt-3 text-center" style="margin-bottom: 20px">
+        Create Account
+      </h4>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSignup()">
+        <div class="form-group input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-user fa-fw"></i>
+            </span>
+          </div>
+          <input
+            id="name"
+            formControlName="name"
+            class="form-control"
+            placeholder="Full name"
+            type="text"
+          />
+        </div>
+        <div
+          style="color: red"
+          *ngIf="submitted && registerForm.controls.name.errors?.required"
+        >
+          Name is required
+        </div>
+        <!-- form-group// -->
+        <div class="form-group input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-envelope fa-fw"></i>
+            </span>
+          </div>
+          <input
+            id="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Email address"
+            type="email"
+          />
+        </div>
+        <div
+          style="color: red"
+          *ngIf="submitted && registerForm.controls.email.errors?.required"
+        >
+          Email is required
+        </div>
+        <div
+          style="color: red"
+          *ngIf="submitted && registerForm.controls.email.errors?.email"
+        >
+          Email is not valid
+        </div>
+
+        <!-- form-group end.// -->
+        <div class="form-group input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-lock fa-fw"></i>
+            </span>
+          </div>
+          <input
+            class="form-control"
+            placeholder="Create password"
+            type="password"
+            id="password"
+            formControlName="password"
+          />
+        </div>
+        <div
+          style="color: red"
+          *ngIf="submitted && registerForm.controls.password.errors?.required"
+        >
+          Passowrd is required
+        </div>
+        <div
+          style="color: red"
+          *ngIf="submitted && registerForm.controls.password.errors?.minlength"
+        >
+          Passowrd is less than 6 words
+        </div>
+        <!-- form-group// -->
+        <div class="form-group input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-lock fa-fw"></i>
+            </span>
+          </div>
+          <input
+            class="form-control"
+            placeholder="ConfirmPassword"
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+          />
+        </div>
+        <div
+          style="color: red"
+          *ngIf="
+            submitted && registerForm.controls.confirmPassword.errors?.required
+          "
+        >
+          Confirm password is required
+        </div>
+        <div
+          style="color: red"
+          *ngIf="
+            submitted && registerForm.controls.confirmPassword.errors?.mustMatch
+          "
+        >
+          Password do not Match
+        </div>
+        <!-- form-group// -->
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">
+            Create Account
+          </button>
+        </div>
+        <!-- form-group// -->
+        <p class="text-center" style="margin: 20px">
+          Have an account? <a routerLink="/login">Log In</a>
+        </p>
+      </form>
+    </article>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="container" style="margin-top: 100px; margin-bottom: 100px">
+  <h4 class="card-title mt-3 text-center" style="margin-bottom: 20px">
+    Contact Us
+  </h4>
+  <form [formGroup]="contactusForm" (ngSubmit)="onSubmit()">
+    <label for="name"> Name</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="Your name.."
+      formControlName="name"
+      class="form-control"
+    />
+    <div
+      style="color: red"
+      *ngIf="submitted && contactusForm.controls.name.errors"
+    >
+      Name is required
+    </div>
+
+    <label for="email">Email</label>
+    <input
+      type="text"
+      id="email"
+      name="email"
+      placeholder="Your email .."
+      formControlName="email"
+      class="form-control"
+    />
+    <div
+      style="color: red"
+      *ngIf="submitted && contactusForm.controls.email.errors"
+    >
+      Email is required
+    </div>
+
+    <label for="country">Country</label>
+    <select
+      id="country"
+      name="country"
+      formControlName="country"
+      class="form-control"
+    >
+      <option value="australia">Australia</option>
+      <option value="canada">Canada</option>
+      <option value="usa">USA</option>
+    </select>
+    <div
+      style="color: red"
+      *ngIf="submitted && contactusForm.controls.country.errors"
+    >
+      Country is required
+    </div>
+
+    <label for="subject">Subject</label>
+    <textarea
+      id="message"
+      name="message"
+      placeholder="Write something.."
+      formControlName="message"
+      class="form-control"
+      style="height: 200px"
+    ></textarea>
+    <div
+      style="color: red"
+      *ngIf="submitted && contactusForm.controls.message.errors"
+    >
+      Message is required
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
+    <div class="form-group">
+      <button
+        type="button"
+        class="btn btn-primary btn-block"
+        (click)="getMessage()"
+      >
+        GetMessage
+      </button>
+    </div>
+    <div>
+      <p *ngIf="loadedPosts.length < 1">No posts</p>
+      <ul class="list-group" *ngIf="loadedPosts.length >= 1">
+        <li class="list-group-item" *ngFor="let post of loadedPosts">
+          <p>{{ post.name }}</p>
+          <p>{{ post.email }}</p>
+          <p>{{ post.country }}</p>
+          <p>{{ post.message }}</p>
+        </li>
+      </ul>
+    </div>
+  </form>
+</div>
