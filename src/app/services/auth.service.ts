@@ -7,10 +7,11 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthData } from './auth-data.model';
+
 import { User } from './user.model';
 import { MessageData } from './message.model';
-import { catchError, exhaustMap, take, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, take, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 export interface AuthResponseData {
   kind: string;
@@ -26,46 +27,46 @@ export interface AuthResponseData {
   providedIn: 'root',
 })
 export class AuthService {
-  user: BehaviorSubject<User> = new BehaviorSubject({} as User);
+  user: BehaviorSubject<User>;
 
   private tokenExpirationTimer: any;
-  constructor(private http: HttpClient, private router: Router) {}
+  private API_URL = environment.API_URL;
+  constructor(private http: HttpClient, private router: Router) {
+    this.user = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('currentUser')!)
+    );
+  }
+
+  public get currentUserValue(): User {
+    return this.user.value;
+  }
+
+  private authdata: string;
 
   login(email: string, password: string) {
-    console.log(this.user);
     return this.http
-      .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDV-XwzSBk7Cf9T5VN7eCg3-XfyWj2VJc8',
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }
-      )
+      .post<any>(this.API_URL + '/user/login/', {
+        email: email,
+        password: password,
+      })
 
       .pipe(
-        catchError(this.handleError),
-        tap((resData) => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
+        map((resData) => {
+          this.authdata = window.btoa(email + ':' + password);
+          localStorage.setItem('currentUser', JSON.stringify(this.authdata));
+          this.user.next(resData);
+          return resData;
         })
       );
   }
 
-  signup(email: string, password: string) {
+  signup(email: string, password: string, name: string) {
     return this.http
-      .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key= AIzaSyDV-XwzSBk7Cf9T5VN7eCg3-XfyWj2VJc8',
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }
-      )
+      .post<AuthResponseData>(this.API_URL + '/user/signup', {
+        email: email,
+        password: password,
+        name: name,
+      })
       .pipe(
         tap((resData) => {
           this.handleAuthentication(
@@ -78,13 +79,9 @@ export class AuthService {
       );
   }
   logout() {
-    this.user.next({} as User);
-    this.router.navigate(['/login']);
-    localStorage.removeItem('userData');
-    if (this.tokenExpirationTimer) {
-      clearTimeout(this.tokenExpirationTimer);
-    }
-    this.tokenExpirationTimer = null;
+    // remove user from local storage to log user out
+    localStorage.removeItem('currentUser');
+    this.user.next(null!);
   }
   getUser() {
     return { ...this.user };

@@ -3,7 +3,10 @@
     class="mask d-flex align-items-center h-100"
     style="background-color: rgba(0, 0, 0, 0.8)"
   >
-    <div class="container">
+    <div *ngIf="isLoading" style="text-align: center">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div class="container" *ngIf="!isLoading">
       <div class="row justify-content-center">
         <div class="col-xl-5 col-md-8">
           <form
